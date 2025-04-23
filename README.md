@@ -179,9 +179,9 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+- 
 
 ## Acknowledgments
 
 - ArXiv for providing the dataset
-- The open-source community for the amazing tools and libraries that make this project possible
+
