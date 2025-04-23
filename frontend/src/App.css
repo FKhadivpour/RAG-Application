@@ -1,0 +1,151 @@
+.App {
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.App-header {
+  background-color: #282c34;
+  padding: 20px;
+  color: white;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.App-header h1 {
+  margin: 0;
+  font-size: 2.5rem;
+}
+
+.App-header p {
+  margin: 10px 0 0;
+  font-size: 1.2rem;
+  opacity: 0.8;
+}
+
+.App-main {
+  min-height: 70vh;
+}
+
+.query-form {
+  display: flex;
+  margin-bottom: 30px;
+}
+
+.query-input {
+  flex: 1;
+  padding: 12px 15px;
+  font-size: 1rem;
+  border: 2px solid #ddd;
+  border-radius: 4px 0 0 4px;
+  outline: none;
+}
+
+.query-input:focus {
+  border-color: #0066cc;
+}
+
+.query-button {
+  background-color: #0066cc;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.query-button:hover {
+  background-color: #0055aa;
+}
+
+.query-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.error-message {
+  background-color: #ffebee;
+  color: #c62828;
+  padding: 15px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.result-container {
+  text-align: left;
+}
+
+.answer-container {
+  background-color: #e3f2fd;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.answer-container h2 {
+  color: #0066cc;
+  margin-top: 0;
+}
+
+.context-container h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.context-chunk {
+  background-color: #f5f5f5;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.context-chunk h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.source-info {
+  font-size: 0.9rem;
+  color: #666;
+  font-style: italic;
+  margin-bottom: 10px;
+}
+
+.chunk-text {
+  line-height: 1.5;
+}
+
+.App-footer {
+  margin-top: 40px;
+  padding: 20px;
+  color: #666;
+  font-size: 0.9rem;
+  border-top: 1px solid #eee;
+}
+
+@media (max-width: 768px) {
+  .App {
+    padding: 10px;
+  }
+  
+  .query-form {
+    flex-direction: column;
+  }
+  
+  .query-input {
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+  
+  .query-button {
+    border-radius: 4px;
+    width: 100%;
+  }
+}
