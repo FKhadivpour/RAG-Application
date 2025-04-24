@@ -60,8 +60,7 @@ This project uses the [ArXiv Dataset](https://www.kaggle.com/datasets/Cornell-Un
 
 1. Clone the repository
 ```bash
-git clone https://github.com/fkhadivpour/rag-knowledge-assistant.git
-cd rag-knowledge-assistant
+git clone https://github.com/fkhadivpour/RAG-Application.git
 ```
 
 2. Set up the Python environment
