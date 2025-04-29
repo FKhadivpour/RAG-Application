@@ -1,59 +1,82 @@
 # 💡 RAG Knowledge Assistant
 
-A full-stack Retrieval-Augmented Generation (RAG) application that:
-- Ingests scientific papers (e.g., ArXiv data)
-- Embeds them into a vector database (ChromaDB)
-- Serves a FastAPI backend to answer queries based on retrieved context
-- Provides a React frontend for users to interact and ask questions
+A Retrieval-Augmented Generation (RAG) application that leverages vector databases and large language models to provide accurate, context-aware responses based on specific knowledge domains.
 
----
+## Overview
 
-## 📂 Project Structure
+This repository implements a complete RAG pipeline with a user-friendly web interface. The system retrieves relevant information from a vector database containing embedded documents and uses this context to generate accurate responses through a large language model.
+
+## Features
+
+- **Document Processing Pipeline**: Ingest, chunk, and embed documents from various sources
+- **Vector Database Integration**: Store and efficiently query document embeddings
+- **Semantic Search**: Find the most relevant context for user queries
+- **LLM Integration**: Generate contextually accurate responses using retrieved information
+- **Web Interface**: User-friendly UI for interacting with the RAG system
+- **API Endpoints**: RESTful API for programmatic access to the RAG pipeline
+- **Performance Metrics**: Evaluation tools to measure retrieval and generation quality
+
+## Architecture
 
 ```
-RAG-Application/
-├── data/
-│   ├── raw/               # Raw ArXiv JSON documents
-│   ├── processed/         # Processed chunks
-│   └── vector_store/      # ChromaDB persisted vectors
-├── docker/                # (empty) - reserved for Docker configs
-├── notebooks/             # (empty) - reserved for experiments
-├── scripts/               # (empty) - reserved for automation scripts
-├── src/                   # Python backend source code
-│   ├── api/
-│   ├── data_processing/
-│   ├── embeddings/
-│   ├── llm/
-│   ├── vector_store/
-│   └── evaluation/        # (optional future) evaluation code
-├── frontend/              # React frontend application
-│   ├── public/
-│   │   └── index.html
-│   ├── src/
-│   │   ├── App.js
-│   │   ├── index.js
-│   │   ├── App.css
-│   │   └── index.css
-│   ├── package.json
-│   └── .env               # Frontend-specific environment
-├── .env                   # Backend-specific environment
-├── main.py                # Backend entry point
-└── README.md              # (this file)
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│                 │     │                 │     │                 │
+│  Data Ingestion │────▶│ Vector Database │────▶│  LLM Interface  │
+│                 │     │                 │     │                 │
+└─────────────────┘     └─────────────────┘     └─────────────────┘
+        │                       ▲                       │
+        │                       │                       │
+        ▼                       │                       ▼
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│                 │     │                 │     │                 │
+│ Text Processing │     │  Query Engine   │◀────│   Web Server    │
+│                 │     │                 │     │                 │
+└─────────────────┘     └─────────────────┘     └─────────────────┘
 ```
 
----
+## Dataset
 
-## 🛠️ Backend Setup (FastAPI)
+This project uses the [ArXiv Dataset](https://www.kaggle.com/datasets/Cornell-University/arxiv) containing scientific papers across various domains. The dataset provides rich, technical content perfect for demonstrating RAG capabilities in specialized knowledge retrieval.
 
-1. **Install dependencies** (in your Python virtual environment):
+## Technologies Used
 
+- **Backend**: Python, FastAPI
+- **Vector Database**: Chroma
+- **Embeddings**: Sentence-Transformers
+- **LLM Integration**: OpenAI API (with option for local models)
+- **Frontend**: React with TypeScript
+- **Containerization**: Docker
+- **Testing**: Pytest
+
+
+
+## Getting Started
+
+### Prerequisites
+
+- Python 3.9+
+- Node.js 16+
+- Docker (optional)
+
+### 🛠️ Installation
+
+1. Clone the repository
 ```bash
+git clone https://github.com/fkhadivpour/RAG-Application.git
+```
+
+2. Set up the Python environment
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-2. **Prepare Environment Variables**:
-
-Create a `.env` at the project root:
+3. Set up environment variables
+```bash
+cp .env.example .env
+# Edit .env with your API keys and configuration
+```
 
 ```env
 HOST=127.0.0.1
@@ -120,6 +143,44 @@ Frontend will automatically proxy API requests to backend (`http://localhost:800
 - Type a query related to your documents (e.g., "What is machine learning?")
 - Click "Search"
 - See AI-generated answer based on retrieved document context!
+
+---
+
+
+
+
+## 📂 Project Structure
+
+```
+RAG-Application/
+├── data/
+│   ├── raw/               # Raw ArXiv JSON documents
+│   ├── processed/         # Processed chunks
+│   └── vector_store/      # ChromaDB persisted vectors
+├── docker/                # (empty) - reserved for Docker configs
+├── notebooks/             # (empty) - reserved for experiments
+├── scripts/               # (empty) - reserved for automation scripts
+├── src/                   # Python backend source code
+│   ├── api/
+│   ├── data_processing/
+│   ├── embeddings/
+│   ├── llm/
+│   ├── vector_store/
+│   └── evaluation/        # (optional future) evaluation code
+├── frontend/              # React frontend application
+│   ├── public/
+│   │   └── index.html
+│   ├── src/
+│   │   ├── App.js
+│   │   ├── index.js
+│   │   ├── App.css
+│   │   └── index.css
+│   ├── package.json
+│   └── .env               # Frontend-specific environment
+├── .env                   # Backend-specific environment
+├── main.py                # Backend entry point
+└── README.md              # (this file)
+```
 
 ---
 
