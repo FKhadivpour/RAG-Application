@@ -1,4 +1,4 @@
-# RAG Knowledge Assistant
+# 💡 RAG Knowledge Assistant
 
 A Retrieval-Augmented Generation (RAG) application that leverages vector databases and large language models to provide accurate, context-aware responses based on specific knowledge domains.
 
@@ -48,6 +48,8 @@ This project uses the [ArXiv Dataset](https://www.kaggle.com/datasets/Cornell-Un
 - **Containerization**: Docker
 - **Testing**: Pytest
 
+
+
 ## Getting Started
 
 ### Prerequisites
@@ -56,7 +58,7 @@ This project uses the [ArXiv Dataset](https://www.kaggle.com/datasets/Cornell-Un
 - Node.js 16+
 - Docker (optional)
 
-### Installation
+### 🛠️ Installation
 
 1. Clone the repository
 ```bash
@@ -76,111 +78,144 @@ cp .env.example .env
 # Edit .env with your API keys and configuration
 ```
 
-4. Install frontend dependencies
+```env
+HOST=127.0.0.1
+PORT=8000
+DATA_DIR=data/raw
+OUTPUT_DIR=data/processed
+VECTOR_STORE_DIR=data/vector_store
+EMBEDDING_MODEL_NAME=all-MiniLM-L6-v2
+OPENAI_API_KEY=your-openai-key-here
+OPENAI_API_BASE=https://api.openai.com/v1
+```
+
+3. **Process Data** (one-time to populate vector store):
+
+```bash
+python main.py --process-data
+```
+
+4. **Start Backend Server**:
+
+```bash
+python main.py
+```
+
+Backend will run on:
+```
+http://127.0.0.1:8000
+```
+
+---
+
+## 💾 Frontend Setup (React)
+
+1. **Go to frontend folder**:
+
 ```bash
 cd frontend
+```
+
+2. **Install dependencies**:
+
+```bash
 npm install
-cd ..
 ```
 
-### Running the Application
+3. **Start Frontend Server**:
 
-#### Development Mode
-
-1. Start the backend server
 ```bash
-python -m src.main
-```
-
-2. Start the frontend development server
-```bash
-cd frontend
 npm start
 ```
 
-3. Access the application at http://localhost:3000
-
-#### Using Docker
-
-```bash
-docker-compose up
+Frontend will open at:
+```
+http://localhost:3000
 ```
 
-## Project Structure
+Frontend will automatically proxy API requests to backend (`http://localhost:8000`).
+
+---
+
+## 🚀 Usage Flow
+
+- Open [http://localhost:3000](http://localhost:3000)
+- Type a query related to your documents (e.g., "What is machine learning?")
+- Click "Search"
+- See AI-generated answer based on retrieved document context!
+
+---
+
+
+
+
+## 📂 Project Structure
 
 ```
-rag-knowledge-assistant/
-├── data/                  # Data storage and processing
-│   ├── raw/               # Raw document storage
-│   └── processed/         # Processed chunks and metadata
-├── src/                   # Backend source code
-│   ├── data_processing/   # Document ingestion and processing
-│   ├── embeddings/        # Embedding models and utilities
-│   ├── vector_store/      # Vector database integration
-│   ├── llm/               # LLM integration and prompt templates
-│   ├── api/               # FastAPI routes and middleware
-│   └── evaluation/        # Performance evaluation tools
+RAG-Application/
+├── data/
+│   ├── raw/               # Raw ArXiv JSON documents
+│   ├── processed/         # Processed chunks
+│   └── vector_store/      # ChromaDB persisted vectors
+├── docker/                # (empty) - reserved for Docker configs
+├── notebooks/             # (empty) - reserved for experiments
+├── scripts/               # (empty) - reserved for automation scripts
+├── src/                   # Python backend source code
+│   ├── api/
+│   ├── data_processing/
+│   ├── embeddings/
+│   ├── llm/
+│   ├── vector_store/
+│   └── evaluation/        # (optional future) evaluation code
 ├── frontend/              # React frontend application
-├── tests/                 # Test suite
-├── notebooks/             # Jupyter notebooks for exploration
-├── docker/                # Docker configuration
-└── scripts/               # Utility scripts
+│   ├── public/
+│   │   └── index.html
+│   ├── src/
+│   │   ├── App.js
+│   │   ├── index.js
+│   │   ├── App.css
+│   │   └── index.css
+│   ├── package.json
+│   └── .env               # Frontend-specific environment
+├── .env                   # Backend-specific environment
+├── main.py                # Backend entry point
+└── README.md              # (this file)
 ```
 
-## Usage Examples
+---
 
-### Document Ingestion
+## 📋 Notes
 
-```python
-from src.data_processing import DocumentProcessor
-from src.vector_store import VectorStore
+- Download the ArXiv dataset json file from kaggle into data/raw folder.
+- Backend and Frontend must be running simultaneously in separate terminals.
 
-# Process documents and store in vector database
-processor = DocumentProcessor()
-documents = processor.load_documents("data/raw/papers/")
-chunks = processor.chunk_documents(documents)
-embeddings = processor.embed_chunks(chunks)
+---
 
-# Store in vector database
-vector_store = VectorStore()
-vector_store.add_embeddings(embeddings, chunks)
-```
+## 📈 Future Improvements
 
-### Query Processing
+- Add Docker support
+- Add unit tests inside `/tests/`
+- Improve frontend UI/UX
+- Support PDF and DOCX ingestion
 
-```python
-from src.api.query_engine import QueryEngine
-from src.llm import LLMInterface
+---
 
-# Set up query engine and LLM
-query_engine = QueryEngine()
-llm = LLMInterface()
+## 📝 Quick Developer Commands
 
-# Process a user query
-user_query = "What are the latest developments in transformer architectures?"
-relevant_chunks = query_engine.retrieve_relevant_chunks(user_query)
-response = llm.generate_response(user_query, relevant_chunks)
-print(response)
-```
+| Action | Command |
+|:-------|:--------|
+| Process documents | `python main.py --process-data` |
+| Start backend server | `python main.py` |
+| Start frontend server | `npm start` (inside `frontend/`) |
+| Fix npm vulnerabilities | `npm audit fix --force` (optional) |
 
-## Evaluation
+---
 
-The repository includes evaluation scripts to measure:
+# ✅ Full Stack Ready!
 
-- Retrieval precision and recall
-- Answer relevance and accuracy
-- Response latency
-- User satisfaction metrics
+- FastAPI + ChromaDB + OpenAI + React.js
+- Fully modular and professional RAG application
+- Easy to extend, deploy, and scale
 
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-- 
-
-## Acknowledgments
-
-- ArXiv for providing the dataset
+---
 
