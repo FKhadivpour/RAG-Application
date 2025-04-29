@@ -1,186 +1,160 @@
-# RAG Knowledge Assistant
+# 💡 RAG Knowledge Assistant
 
-A Retrieval-Augmented Generation (RAG) application that leverages vector databases and large language models to provide accurate, context-aware responses based on specific knowledge domains.
+A full-stack Retrieval-Augmented Generation (RAG) application that:
+- Ingests scientific papers (e.g., ArXiv data)
+- Embeds them into a vector database (ChromaDB)
+- Serves a FastAPI backend to answer queries based on retrieved context
+- Provides a React frontend for users to interact and ask questions
 
-## Overview
+---
 
-This repository implements a complete RAG pipeline with a user-friendly web interface. The system retrieves relevant information from a vector database containing embedded documents and uses this context to generate accurate responses through a large language model.
-
-## Features
-
-- **Document Processing Pipeline**: Ingest, chunk, and embed documents from various sources
-- **Vector Database Integration**: Store and efficiently query document embeddings
-- **Semantic Search**: Find the most relevant context for user queries
-- **LLM Integration**: Generate contextually accurate responses using retrieved information
-- **Web Interface**: User-friendly UI for interacting with the RAG system
-- **API Endpoints**: RESTful API for programmatic access to the RAG pipeline
-- **Performance Metrics**: Evaluation tools to measure retrieval and generation quality
-
-## Architecture
+## 📂 Project Structure
 
 ```
-┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
-│                 │     │                 │     │                 │
-│  Data Ingestion │────▶│ Vector Database │────▶│  LLM Interface  │
-│                 │     │                 │     │                 │
-└─────────────────┘     └─────────────────┘     └─────────────────┘
-        │                       ▲                       │
-        │                       │                       │
-        ▼                       │                       ▼
-┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
-│                 │     │                 │     │                 │
-│ Text Processing │     │  Query Engine   │◀────│   Web Server    │
-│                 │     │                 │     │                 │
-└─────────────────┘     └─────────────────┘     └─────────────────┘
+RAG-Application/
+├── data/
+│   ├── raw/               # Raw ArXiv JSON documents
+│   ├── processed/         # Processed chunks
+│   └── vector_store/      # ChromaDB persisted vectors
+├── docker/                # (empty) - reserved for Docker configs
+├── notebooks/             # (empty) - reserved for experiments
+├── scripts/               # (empty) - reserved for automation scripts
+├── src/                   # Python backend source code
+│   ├── api/
+│   ├── data_processing/
+│   ├── embeddings/
+│   ├── llm/
+│   ├── vector_store/
+│   └── evaluation/        # (optional future) evaluation code
+├── frontend/              # React frontend application
+│   ├── public/
+│   │   └── index.html
+│   ├── src/
+│   │   ├── App.js
+│   │   ├── index.js
+│   │   ├── App.css
+│   │   └── index.css
+│   ├── package.json
+│   └── .env               # Frontend-specific environment
+├── .env                   # Backend-specific environment
+├── main.py                # Backend entry point
+└── README.md              # (this file)
 ```
 
-## Dataset
+---
 
-This project uses the [ArXiv Dataset](https://www.kaggle.com/datasets/Cornell-University/arxiv) containing scientific papers across various domains. The dataset provides rich, technical content perfect for demonstrating RAG capabilities in specialized knowledge retrieval.
+## 🛠️ Backend Setup (FastAPI)
 
-## Technologies Used
+1. **Install dependencies** (in your Python virtual environment):
 
-- **Backend**: Python, FastAPI
-- **Vector Database**: Chroma
-- **Embeddings**: Sentence-Transformers
-- **LLM Integration**: OpenAI API (with option for local models)
-- **Frontend**: React with TypeScript
-- **Containerization**: Docker
-- **Testing**: Pytest
-
-## Getting Started
-
-### Prerequisites
-
-- Python 3.9+
-- Node.js 16+
-- Docker (optional)
-
-### Installation
-
-1. Clone the repository
 ```bash
-git clone https://github.com/fkhadivpour/RAG-Application.git
-```
-
-2. Set up the Python environment
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-3. Set up environment variables
-```bash
-cp .env.example .env
-# Edit .env with your API keys and configuration
+2. **Prepare Environment Variables**:
+
+Create a `.env` at the project root:
+
+```env
+HOST=127.0.0.1
+PORT=8000
+DATA_DIR=data/raw
+OUTPUT_DIR=data/processed
+VECTOR_STORE_DIR=data/vector_store
+EMBEDDING_MODEL_NAME=all-MiniLM-L6-v2
+OPENAI_API_KEY=your-openai-key-here
+OPENAI_API_BASE=https://api.openai.com/v1
 ```
 
-4. Install frontend dependencies
+3. **Process Data** (one-time to populate vector store):
+
+```bash
+python main.py --process-data
+```
+
+4. **Start Backend Server**:
+
+```bash
+python main.py
+```
+
+Backend will run on:
+```
+http://127.0.0.1:8000
+```
+
+---
+
+## 💾 Frontend Setup (React)
+
+1. **Go to frontend folder**:
+
 ```bash
 cd frontend
+```
+
+2. **Install dependencies**:
+
+```bash
 npm install
-cd ..
 ```
 
-### Running the Application
+3. **Start Frontend Server**:
 
-#### Development Mode
-
-1. Start the backend server
 ```bash
-python -m src.main
-```
-
-2. Start the frontend development server
-```bash
-cd frontend
 npm start
 ```
 
-3. Access the application at http://localhost:3000
-
-#### Using Docker
-
-```bash
-docker-compose up
+Frontend will open at:
+```
+http://localhost:3000
 ```
 
-## Project Structure
+Frontend will automatically proxy API requests to backend (`http://localhost:8000`).
 
-```
-rag-knowledge-assistant/
-├── data/                  # Data storage and processing
-│   ├── raw/               # Raw document storage
-│   └── processed/         # Processed chunks and metadata
-├── src/                   # Backend source code
-│   ├── data_processing/   # Document ingestion and processing
-│   ├── embeddings/        # Embedding models and utilities
-│   ├── vector_store/      # Vector database integration
-│   ├── llm/               # LLM integration and prompt templates
-│   ├── api/               # FastAPI routes and middleware
-│   └── evaluation/        # Performance evaluation tools
-├── frontend/              # React frontend application
-├── tests/                 # Test suite
-├── notebooks/             # Jupyter notebooks for exploration
-├── docker/                # Docker configuration
-└── scripts/               # Utility scripts
-```
+---
 
-## Usage Examples
+## 🚀 Usage Flow
 
-### Document Ingestion
+- Open [http://localhost:3000](http://localhost:3000)
+- Type a query related to your documents (e.g., "What is machine learning?")
+- Click "Search"
+- See AI-generated answer based on retrieved document context!
 
-```python
-from src.data_processing import DocumentProcessor
-from src.vector_store import VectorStore
+---
 
-# Process documents and store in vector database
-processor = DocumentProcessor()
-documents = processor.load_documents("data/raw/papers/")
-chunks = processor.chunk_documents(documents)
-embeddings = processor.embed_chunks(chunks)
+## 📋 Notes
 
-# Store in vector database
-vector_store = VectorStore()
-vector_store.add_embeddings(embeddings, chunks)
-```
+- Download the ArXiv dataset json file from kaggle into data/raw folder.
+- Backend and Frontend must be running simultaneously in separate terminals.
 
-### Query Processing
+---
 
-```python
-from src.api.query_engine import QueryEngine
-from src.llm import LLMInterface
+## 📈 Future Improvements
 
-# Set up query engine and LLM
-query_engine = QueryEngine()
-llm = LLMInterface()
+- Add Docker support
+- Add unit tests inside `/tests/`
+- Improve frontend UI/UX
+- Support PDF and DOCX ingestion
 
-# Process a user query
-user_query = "What are the latest developments in transformer architectures?"
-relevant_chunks = query_engine.retrieve_relevant_chunks(user_query)
-response = llm.generate_response(user_query, relevant_chunks)
-print(response)
-```
+---
 
-## Evaluation
+## 📝 Quick Developer Commands
 
-The repository includes evaluation scripts to measure:
+| Action | Command |
+|:-------|:--------|
+| Process documents | `python main.py --process-data` |
+| Start backend server | `python main.py` |
+| Start frontend server | `npm start` (inside `frontend/`) |
+| Fix npm vulnerabilities | `npm audit fix --force` (optional) |
 
-- Retrieval precision and recall
-- Answer relevance and accuracy
-- Response latency
-- User satisfaction metrics
+---
 
-## Contributing
+# ✅ Full Stack Ready!
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+- FastAPI + ChromaDB + OpenAI + React.js
+- Fully modular and professional RAG application
+- Easy to extend, deploy, and scale
 
-## License
-
-- 
-
-## Acknowledgments
-
-- ArXiv for providing the dataset
+---
 
